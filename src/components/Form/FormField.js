@@ -1,8 +1,8 @@
 import React from 'react';
 import { useField } from 'formik';
 
-const FormField = ({ label, options, ...props }) => {
-  const [field, meta] = useField(props);
+const FormField = ({ label, options, name, ...props }) => {
+  const [field, meta] = useField(name);
   
   const isCheckbox = props.type === 'checkbox';
   const isTextarea = props.type === 'textarea';
@@ -13,7 +13,7 @@ const FormField = ({ label, options, ...props }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <label
           className="block text-gray-700 font-bold mb-2"
-          htmlFor={props.id || props.name}
+          htmlFor={props.id || name}
         >
           {label}
         </label>
