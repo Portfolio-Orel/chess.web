@@ -1,60 +1,28 @@
-import React from 'react';
-import { useField } from 'formik';
+import React, { useState } from "react";
+import { useField } from "formik";
 
 const FormField = ({ label, options, name, ...props }) => {
   const [field, meta] = useField(name);
-  
-  const isCheckbox = props.type === 'checkbox';
-  const isTextarea = props.type === 'textarea';
-  const isSelect = props.type === 'select';
 
   return (
     <div className="my-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex flex-col">
         <label
-          className="block text-gray-700 font-bold mb-2"
+          className="block text-gray-700 font-bold mb-1"
           htmlFor={props.id || name}
         >
           {label}
         </label>
-        {isTextarea ? (
-          <textarea
-            className={`appearance-none border ${
-              meta.touched && meta.error ? 'border-red-500' : 'border-gray-200'
-            } rounded-lg w-full md:col-span-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-            {...field}
-            {...props}
-          />
-        ) : isCheckbox ? (
+        <div className="relative">
           <input
-            type="checkbox"
-            className="form-checkbox h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 md:col-start-2"
+            type="text"
+            className={`appearance-none border ${
+              meta.touched && meta.error ? "border-red-500" : "border-gray-200"
+            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
             {...field}
             {...props}
           />
-        ) : isSelect ? (
-          <select
-            className={`appearance-none border ${
-              meta.touched && meta.error ? 'border-red-500' : 'border-gray-200'
-            } rounded-lg w-full md:ml-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-            {...field}
-            {...props}
-          >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <input
-            className={`appearance-none border ${
-              meta.touched && meta.error ? 'border-red-500' : 'border-gray-200'
-            } rounded-lg w-full md:ml-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-            {...field}
-            {...props}
-          />
-        )}
+        </div>
       </div>
       {meta.touched && meta.error && (
         <div className="text-red-500 text-xs italic">{meta.error}</div>

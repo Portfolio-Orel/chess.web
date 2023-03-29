@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import FormField from "./Form/FormField";
+import EventBaseDetails from "./Form/EventBaseDetails";
+import MultiEventField from "./Form/MultiEventField";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -22,6 +23,14 @@ const options = [
 ];
 
 const AddEventForm = () => {
+  const [baseDetails, setBaseDetails] = useState({});
+  const [showDetails, setShowDetails] = useState(true);
+
+  const onBaseDetailsSubmit = (values) => {
+    setBaseDetails(values);
+    setShowDetails(true);
+  };
+
   return (
     <Formik
       initialValues={{
@@ -38,44 +47,49 @@ const AddEventForm = () => {
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
-        alert("submitted");
+        onSubmit(values);
       }}
     >
       {({ dirty, isValid }) => (
         <Form className="p-4 bg-white rounded-lg shadow-md max-w-md">
-          <FormField label="Name" name="name" type="text" />
-          <FormField label="Description" name="description" type="textarea" />
-          <FormField label="Price" name="price" type="number" />
-          {/* <FormField label="Currency" name="currency" type="text" /> */}
-          <FormField label="Event Type" name="event_type" type="text" />
-          <FormField label="Event Format" name="event_format" type="text" />
-          <div className="flex flex-col justify-start items-start">
-            <FormField
-              label="Is Rating Israel"
-              name="is_rating_israel"
-              type="checkbox"
-            />
-            <FormField
-              label="Is Rating FIDE"
-              name="is_rating_fide"
-              type="checkbox"
-            />
-            <FormField
-              label="Select an option"
-              name="selectOption"
-              type="select"
-              options={options}
-            />
+          <div className="max-w-md mx-auto">
+            {showDetails ? (
+              <div className="rounded-lg p-4 mt-4 animate-fade-in">
+                <h2 className="text-lg font-semibold mb-4">Event Details</h2>
+                <div className="mb-4">
+                  <label className="block font-medium mb-1">Name</label>
+                  <div className="bg-gray-100 p-2 rounded-lg">
+                    {baseDetails.name}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="block font-medium mb-1">Description</label>
+                  <div className="bg-gray-100 p-2 rounded-lg">
+                    {baseDetails.description}
+                  </div>
+                </div>
+                <MultiEventField
+                  label="Label"
+                  name="Name"
+                  onSubmit={() => {}}
+                />
+              </div>
+            ) : (
+              <div className="animate-fade-in">
+                <EventBaseDetails
+                  onSubmit={onBaseDetailsSubmit}
+                  options={options}
+                />
+              </div>
+            )}
+            <button
+              type="submit"
+              disabled={!dirty || !isValid}
+              className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+            >
+              Submit
+            </button>
           </div>
-          {/* <FormField label="Game ID" name="game_id" type="text" /> */}
-          <button
-            type="submit"
-            disabled={!dirty || !isValid}
-            className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-          >
-            Submit
-          </button>
         </Form>
       )}
     </Formik>
