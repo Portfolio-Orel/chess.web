@@ -19,6 +19,8 @@ import {
   DELETE_GAME_FAILURE,
 } from "../actions/games";
 
+import { CLEAR_GAMES } from "../actions/games";
+
 const initialState = {
   games: [],
   loading: false,
@@ -30,14 +32,14 @@ const gamesReducer = (state = initialState, action) => {
     case FETCH_GAMES_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_GAMES_SUCCESS:
-      return { ...state, loading: false, games: action.games };
+      return { ...state, loading: false, games: action.payload.games };
     case FETCH_GAMES_FAILURE:
       return { ...state, loading: false, error: action.error };
 
     case ADD_GAME_REQUEST:
       return { ...state, loading: true, error: null };
     case ADD_GAME_SUCCESS:
-      return { ...state, loading: false, games: [...state.games, action.game] };
+      return { ...state, loading: false, games: [...state.games, action.payload.game] };
     case ADD_GAME_FAILURE:
       return { ...state, loading: false, error: action.error };
 
@@ -48,7 +50,7 @@ const gamesReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         games: state.games.map((game) =>
-          game.id === action.game.id ? action.game : game
+          game.id === action.game.id ? action.payload.game : game
         ),
       };
     case UPDATE_GAME_FAILURE:
@@ -60,15 +62,17 @@ const gamesReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        games: state.games.filter((game) => game.id !== action.game.id),
+        games: state.games.filter((game) => game.id !== action.payload.game.id),
       };
     case DELETE_GAME_FAILURE:
       return { ...state, loading: false, error: action.error };
+
+    case CLEAR_GAMES:
+      return { ...state, games: [] };
 
     default:
       return state;
   }
 };
-
 
 export default gamesReducer;

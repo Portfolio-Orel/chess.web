@@ -20,8 +20,8 @@ import {
 } from "../actions/event";
 
 const initialState = {
-  user: null,
-  isLoading: false,
+  events: [],
+  loading: false,
   error: null,
 };
 
@@ -30,30 +30,30 @@ const eventsReducer = (state = initialState, action) => {
     case GET_EVENTS_REQUEST:
       return { ...state, isLoading: true, error: null };
     case GET_EVENTS_SUCCESS:
-      return { ...state, isLoading: false, user: action.user };
+      return { ...state, isLoading: false, events: action.payload.events };
     case GET_EVENTS_FAILURE:
-      return { ...state, isLoading: false, error: action.error };
+      return { ...state, isLoading: false, error: action.payload.error };
 
     case ADD_EVENT_REQUEST:
       return { ...state, isLoading: true, error: null };
     case ADD_EVENT_SUCCESS:
-      return { ...state, isLoading: false, user: action.user };
+      return { ...state, isLoading: false, events: action.payload.events };
     case ADD_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.error };
+      return { ...state, isLoading: false, error: action.payload.error };
 
     case UPDATE_EVENT_REQUEST:
       return { ...state, isLoading: true, error: null };
     case UPDATE_EVENT_SUCCESS:
-      return { ...state, isLoading: false, user: action.user };
+      return { ...state, isLoading: false, events: action.payload.events };
     case UPDATE_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.error };
+      return { ...state, isLoading: false, error: action.payload.error };
 
     case DELETE_EVENT_REQUEST:
       return { ...state, isLoading: true, error: null };
     case DELETE_EVENT_SUCCESS:
-      return { ...state, isLoading: false, user: action.user };
+      return { ...state, isLoading: false, events: action.payload.events };
     case DELETE_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.error };
+      return { ...state, isLoading: false, error: action.payload.error };
       
     default:
       return state;

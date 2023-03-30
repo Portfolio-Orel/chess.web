@@ -16,15 +16,9 @@ const validationSchema = Yup.object().shape({
   game_id: Yup.string().required("Required"),
 });
 
-const options = [
-  { label: "Option 1", value: "option1" },
-  { label: "Option 2", value: "option2" },
-  { label: "Option 3", value: "option3" },
-];
-
 const AddEventForm = () => {
   const [baseDetails, setBaseDetails] = useState({});
-  const [showDetails, setShowDetails] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
 
   const onBaseDetailsSubmit = (values) => {
     setBaseDetails(values);
@@ -78,7 +72,6 @@ const AddEventForm = () => {
               <div className="animate-fade-in">
                 <EventBaseDetails
                   onSubmit={onBaseDetailsSubmit}
-                  options={options}
                 />
               </div>
             )}

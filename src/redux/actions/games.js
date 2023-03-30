@@ -16,6 +16,8 @@ export const DELETE_GAME_REQUEST = "DELETE_GAME_REQUEST";
 export const DELETE_GAME_SUCCESS = "DELETE_GAME_SUCCESS";
 export const DELETE_GAME_FAILURE = "DELETE_GAME_FAILURE";
 
+export const CLEAR_GAMES = "CLEAR_GAMES";
+
 const fetchGamesRequest = () => ({
   type: FETCH_GAMES_REQUEST,
 });
@@ -74,6 +76,10 @@ const deleteGameFailure = (error) => ({
   payload: { error },
 });
 
+export const clearGames = () => ({
+  type: CLEAR_GAMES,
+});
+
 export const handleFetchGames = () => async (dispatch) => {
   dispatch(fetchGamesRequest());
   try {
@@ -83,7 +89,7 @@ export const handleFetchGames = () => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
-    const games = await response.json();
+    const games = JSON.parse(response.data);
     dispatch(fetchGamesSuccess(games));
   } catch (error) {
     dispatch(fetchGamesFailure(error.message));
@@ -127,7 +133,7 @@ export const handleUpdateGame = (game) => async (dispatch) => {
 export const handleDeleteGame = (id) => async (dispatch) => {
   dispatch(deleteGameRequest());
   try {
-    const response = await axios.delete(`/api/games/${id}`, {
+    await axios.delete(`/api/games/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -137,4 +143,8 @@ export const handleDeleteGame = (id) => async (dispatch) => {
   } catch (error) {
     dispatch(deleteGameFailure(error.message));
   }
+};
+
+export const handleClearGames = () => async (dispatch) => {
+  dispatch(clearGames());
 };

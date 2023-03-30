@@ -1,6 +1,8 @@
-import LoginForm from "../components/LoginForm";
+import LoginForm from "@/components/LoginForm";
 import { useSelector, useDispatch } from "react-redux";
-import { isAuthenticated } from "../redux/actions/auth";
+import { isAuthenticated } from "@/redux/actions/auth";
+import { handleFetchGames, handleClearGames } from "@/redux/actions/games";
+import { handleFetchGameFormats, handleClearGameFormats } from "@/redux/actions/gameFormats";
 import AddEventForm from "@/components/AddEventForm";
 import { useEffect } from "react";
 import { Loading } from "@/components/Loading";
@@ -12,6 +14,17 @@ export default function Home() {
   useEffect(() => {
     dispatch(isAuthenticated());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authState.user) {
+      dispatch(handleFetchGames());
+      dispatch(handleFetchGameFormats());
+    } else {
+      dispatch(handleClearGames());
+      dispatch(handleClearGameFormats());
+    }
+  }, [authState, dispatch]);
+
   return (
     <div className="flex items-center justify-center h-screen">
       {authState?.loading ? (
