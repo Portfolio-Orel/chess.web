@@ -1,7 +1,7 @@
 import {
-  GET_EVENTS_REQUEST,
-  GET_EVENTS_SUCCESS,
-  GET_EVENTS_FAILURE,
+  FETCH_EVENTS_REQUEST,
+  FETCH_EVENTS_SUCCESS,
+  FETCH_EVENTS_FAILURE,
 } from "../actions/event";
 import {
   ADD_EVENT_REQUEST,
@@ -29,11 +29,11 @@ const initialState = {
 
 const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_EVENTS_REQUEST:
+    case FETCH_EVENTS_REQUEST:
       return { ...state, isLoading: true, error: null };
-    case GET_EVENTS_SUCCESS:
+    case FETCH_EVENTS_SUCCESS:
       return { ...state, isLoading: false, events: action.payload.events };
-    case GET_EVENTS_FAILURE:
+    case FETCH_EVENTS_FAILURE:
       return { ...state, isLoading: false, error: action.payload.error };
 
     case ADD_EVENT_REQUEST:
