@@ -11,10 +11,9 @@ export const requestWrapper = async (req, res, request) => {
     axios.defaults.headers.common["userid"] = user_id;
 
     const result = await request(req, res, user_id); // Pass req and res to the request function
-    console.log("result", result);
     res.status(result.status || 500).json(result?.body);
   } catch (error) {
-    console.log("error", error);
+    console.log("error", request);
     res.status(error.status || 500).json({ error: error.message });
   }
 };

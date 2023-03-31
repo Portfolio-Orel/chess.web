@@ -1,9 +1,9 @@
 import axios from "axios";
 import { requestWrapper, baseUrl } from "@/utils/requestUtils";
 
-const handleGetEvents = async (req, res) => {
+const handleGetIntervals = async (req, res) => {
   await requestWrapper(req, res, async (req, res, user_id) => {
-    const result = await axios.get(`${baseUrl}/events`);
+    const result = await axios.get(`${baseUrl}/intervals`);
     return {
       status: 200,
       body: JSON.stringify(result.data),
@@ -11,10 +11,9 @@ const handleGetEvents = async (req, res) => {
   });
 };
 
-const handleAddEvent = async (req, res) => {
+const handleAddInterval = async (req, res) => {
   await requestWrapper(req, res, async (req, res, user_id) => {
-    console.log("Bodyyyyy:", req.body);
-    const result = await axios.post(`${baseUrl}/events`, req.body);
+    const result = await axios.post(`${baseUrl}/intervals`, req.body);
     return {
       status: 200,
       body: JSON.stringify(result.data),
@@ -22,12 +21,9 @@ const handleAddEvent = async (req, res) => {
   });
 };
 
-const handleUpdateEvent = async (req, res) => {
+const handleUpdateInterval = async (req, res) => {
   await requestWrapper(req, res, async (req, res, user_id) => {
-    const result = await axios.put(
-      `${baseUrl}/events/${req.body.id}`,
-      req.body
-    );
+    const result = await axios.put(`${baseUrl}/intervals/${req.body.uuid}`, req.body);
     return {
       status: 200,
       body: JSON.stringify(result.data),
@@ -35,9 +31,9 @@ const handleUpdateEvent = async (req, res) => {
   });
 };
 
-const handleDeleteEvent = async (req, res) => {
+const handleDeleteInterval = async (req, res) => {
   await requestWrapper(req, res, async (req, res, user_id) => {
-    const result = await axios.delete(`${baseUrl}/events/${req.body.id}`);
+    const result = await axios.delete(`${baseUrl}/intervals/${req.body.uuid}`);
     return {
       status: 200,
       body: JSON.stringify(result.data),
@@ -48,18 +44,16 @@ const handleDeleteEvent = async (req, res) => {
 export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
-      await handleGetEvents(req, res);
+      await handleGetIntervals(req, res);
       break;
     case "POST":
-      await handleAddEvent(req, res);
+      await handleAddInterval(req, res);
       break;
     case "PUT":
-      await handleUpdateEvent(req, res);
+      await handleUpdateInterval(req, res);
       break;
     case "DELETE":
-      await handleDeleteEvent(req, res);
+      await handleDeleteInterval(req, res);
       break;
-    default:
-      res.status(405).end();
   }
-}
+};

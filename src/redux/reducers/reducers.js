@@ -1,13 +1,15 @@
-import authReducer from './auth';
-import eventsReducer from './event';
-import gameReducer from './games';
-import gameFormatsReducer from './gameFormats';
+import authReducer from "./auth";
+import eventsReducer from "./event";
+import gameReducer from "./games";
+import gameFormatsReducer from "./gameFormats";
+import intervalsReducer from "./intervals";
 
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 export default combineReducers({
-    auth: authReducer,
-    events: eventsReducer,
-    games: gameReducer,
-    gameFormats: gameFormatsReducer,
+  auth: authReducer,
+  events: eventsReducer,
+  games: gameReducer,
+  gameFormats: gameFormatsReducer,
+  intervals: intervalsReducer,
 });

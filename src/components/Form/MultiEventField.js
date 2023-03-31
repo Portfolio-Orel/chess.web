@@ -1,25 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useField } from "formik";
+import { useSelector, useDispatch } from "react-redux";
+import { handleFetchIntervals } from "@/redux/actions/intervals";
 import PropTypes from "prop-types";
 import FormField from "./FormField";
 import RadioGroupField from "./RadioGroupField";
 import FormFieldCheckbox from "./FormFieldCheckbox";
 
 const MultiEventField = ({ label, name, ...props }) => {
+  const dispatch = useDispatch();
+  const intervals = useSelector((state) => state.intervals);
+
   const [field, meta] = useField(name);
+
+  const [intervalOptions, setIntervalOptions] = useState([]);
   const [showIntervals, setShowIntervals] = useState(false);
-  const [customInterval, setCustomInterval] = useState("");
+
+  useEffect(() => {
+    if (field?.value === "Custom") {
+      setCustomInterval(field?.value);
+    }
+  }, [field]);
 
   const toggleIntervalVisibility = () => {
-    // const x = field;
-    // const y = meta;
-    // debugger;
     setShowIntervals(!showIntervals);
+    if (
+      intervals &&
+      intervals.intervals &&
+      intervals.intervals.length === 0 &&
+      !intervals.loading
+    ) {
+      dispatch(handleFetchIntervals());
+    }
   };
 
-  const handleCustomIntervalChange = (event) => {
-    setCustomInterval(event.target.value);
-  };
+  useEffect(() => {
+    if (intervals?.intervals && intervals?.intervals.length > 0) {
+      const options = [];
+      if (intervals?.intervals) {
+        intervals.intervals.forEach((interval) => {
+          options.push({
+            label: interval.name,
+            value: interval.name,
+          });
+        });
+      }
+      setIntervalOptions(options);
+    }
+  }, [intervals?.intervals]);
 
   return (
     <div className="my-4">
@@ -40,25 +68,27 @@ const MultiEventField = ({ label, name, ...props }) => {
           />
           {field?.value?.multipleEvents && (
             <div className="ml-4">
+              <FormField
+                label="How many events?"
+                name={`${name}.numberOfEvents`}
+                type="number"
+                value={field?.value?.numberOfEvents ?? ""}
+                {...props}
+              />
               <RadioGroupField
                 label="Interval"
                 name={`${name}.interval`}
-                options={[
-                  { label: "Daily", value: "daily" },
-                  { label: "Weekly", value: "weekly" },
-                  { label: "Monthly", value: "monthly" },
-                  { label: "Custom", value: "custom" },
-                ]}
+                options={intervalOptions}
+                isLoading={!intervals || intervals.loading}
                 {...props}
               />
-              {field?.value?.interval === "custom" && (
+              {field?.value?.interval === "Custom" && (
                 <div className="ml-4">
                   <FormField
                     label="Custom Interval"
                     name={`${name}.customInterval`}
                     type="number"
-                    onChange={handleCustomIntervalChange}
-                    value={customInterval}
+                    value={field?.value ?? ""}
                     {...props}
                   />
                   <span className="ml-1">days</span>
