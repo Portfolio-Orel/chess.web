@@ -106,7 +106,7 @@ export const handleAddGame = (game) => async (dispatch) => {
       },
       body: JSON.stringify(game),
     });
-    const newGame = await response.json();
+    const newGame = JSON.parse(response.data);
     dispatch(addGameSuccess(newGame));
   } catch (error) {
     dispatch(addGameFailure(error.message));
@@ -123,7 +123,7 @@ export const handleUpdateGame = (game) => async (dispatch) => {
       },
       body: JSON.stringify(game),
     });
-    const updatedGame = await response.json();
+    const updatedGame = JSON.parse(response.data);
     dispatch(updateGameSuccess(updatedGame));
   } catch (error) {
     dispatch(updateGameFailure(error.message));

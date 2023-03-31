@@ -32,17 +32,26 @@ const gameFormatsReducer = (state = initialState, action) => {
     case FETCH_GAME_FORMATS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_GAME_FORMATS_SUCCESS:
-      return { ...state, loading: false, gameFormats: action.payload.gameFormats };
+      return {
+        ...state,
+        loading: false,
+        gameFormats: action.payload.gameFormats,
+      };
     case FETCH_GAME_FORMATS_FAILURE:
       return { ...state, loading: false, error: action.payload.error };
 
     case ADD_GAME_FORMAT_REQUEST:
-      return { ...state, loading: true, error: null };
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        gameFormats: [...state.gameFormats, action.payload.gameFormat],
+      };
     case ADD_GAME_FORMAT_SUCCESS:
       return {
         ...state,
         loading: false,
-        gameFormats: [...state.gameFormats, action.payload.gameFormat],
+        gameFormats: state.gameFormats.concat(action.payload.gameFormat),
       };
     case ADD_GAME_FORMAT_FAILURE:
       return { ...state, loading: false, error: action.payload.error };
@@ -55,7 +64,7 @@ const gameFormatsReducer = (state = initialState, action) => {
         loading: false,
         gameFormats: state.gameFormats.map((gameFormat) =>
           gameFormat.id === action.payload.gameFormat.id
-            ? action.gameFormat
+            ? action.payload.gameFormat
             : gameFormat
         ),
       };

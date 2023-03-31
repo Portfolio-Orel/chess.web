@@ -35,11 +35,12 @@ const AddEventForm = () => {
   };
 
   const buildDates = (startDate, intervalValue, eventsCount) => {
+    if (!startDate || !intervalValue || !eventsCount) return [];
     const dates = [];
     for (let i = 0; i < eventsCount; i++) {
       const newDate = new Date(startDate);
       newDate.setDate(newDate.getDate() + intervalValue * i);
-      dates.push(newDate);
+      dates.push(newDate.getTime());
     }
     return dates;
   };
@@ -63,14 +64,14 @@ const AddEventForm = () => {
       }}
       // validationSchema={validationSchema}
       onSubmit={(values) => {
-        alert(JSON.stringify(values));
         const interval =
-          intervals.find((int) => int.name === values.interval_object.interval)
-            ?.value ?? 1; // TODO: Set in object the value
+          intervals?.find(
+            (int) => int.name === values?.interval_object?.interval
+          )?.value ?? 1; // TODO: Set in object the value
         const dates = buildDates(
-          values.start_date,
+          values?.start_date,
           interval,
-          values.interval_object.numberOfEvents ?? 1
+          values?.interval_object?.numberOfEvents ?? 1
         );
         const name = values.name;
         const description = values.description;

@@ -106,7 +106,7 @@ export const handleAddInterval = (interval) => async (dispatch) => {
       },
       body: JSON.stringify(interval),
     });
-    const newInterval = await response.json();
+    const newInterval = JSON.parse(response.data);
     dispatch(addIntervalSuccess(newInterval));
   } catch (error) {
     dispatch(addIntervalFailure(error.message));
@@ -123,7 +123,7 @@ export const handleUpdateInterval = (interval) => async (dispatch) => {
       },
       body: JSON.stringify(interval),
     });
-    const updatedInterval = await response.json();
+    const updatedInterval = JSON.parse(response.data);
     dispatch(updateIntervalSuccess(updatedInterval));
   } catch (error) {
     dispatch(updateIntervalFailure(error.message));

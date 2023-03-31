@@ -5,7 +5,7 @@ import {
 } from "../actions/event";
 import {
   ADD_EVENT_REQUEST,
-  ADD_EVENT_SUCCESS,
+  ADD_EVENTS_SUCCESS,
   ADD_EVENT_FAILURE,
 } from "../actions/event";
 import {
@@ -18,6 +18,8 @@ import {
   DELETE_EVENT_SUCCESS,
   DELETE_EVENT_FAILURE,
 } from "../actions/event";
+
+import { CLEAR_EVENTS } from "../actions/event";
 
 const initialState = {
   events: [],
@@ -36,15 +38,25 @@ const eventsReducer = (state = initialState, action) => {
 
     case ADD_EVENT_REQUEST:
       return { ...state, isLoading: true, error: null };
-    case ADD_EVENT_SUCCESS:
-      return { ...state, isLoading: false, events: action.payload.events };
+    case ADD_EVENTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        events: state.events.concat(action.payload.event),
+      };
     case ADD_EVENT_FAILURE:
       return { ...state, isLoading: false, error: action.payload.error };
 
     case UPDATE_EVENT_REQUEST:
       return { ...state, isLoading: true, error: null };
     case UPDATE_EVENT_SUCCESS:
-      return { ...state, isLoading: false, events: action.payload.events };
+      const updatedEvents = state.events.map((event) => {
+        if (event.id === action.payload.event.id) {
+          return action.payload.event;
+        }
+        return event;
+      });
+      return { ...state, isLoading: false, events: updatedEvents };
     case UPDATE_EVENT_FAILURE:
       return { ...state, isLoading: false, error: action.payload.error };
 
@@ -54,7 +66,8 @@ const eventsReducer = (state = initialState, action) => {
       return { ...state, isLoading: false, events: action.payload.events };
     case DELETE_EVENT_FAILURE:
       return { ...state, isLoading: false, error: action.payload.error };
-      
+    case CLEAR_EVENTS:
+      return { ...state, events: [] };
     default:
       return state;
   }

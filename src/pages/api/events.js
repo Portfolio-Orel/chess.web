@@ -13,7 +13,6 @@ const handleGetEvents = async (req, res) => {
 
 const handleAddEvent = async (req, res) => {
   await requestWrapper(req, res, async (req, res, user_id) => {
-    console.log("Bodyyyyy:", req.body);
     const result = await axios.post(`${baseUrl}/events`, req.body);
     return {
       status: 200,

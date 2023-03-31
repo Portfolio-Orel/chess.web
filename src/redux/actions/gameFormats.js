@@ -106,7 +106,7 @@ export const handleAddGameFormat = (gameFormat) => async (dispatch) => {
       },
       body: JSON.stringify(gameFormat),
     });
-    const gameFormat = await response.json();
+    const gameFormat = JSON.parse(response.data);
     dispatch(addGameFormatSuccess(gameFormat));
   } catch (error) {
     dispatch(addGameFormatFailure(error.message));
@@ -123,7 +123,7 @@ export const handleUpdateGameFormat = (gameFormat) => async (dispatch) => {
       },
       body: JSON.stringify(gameFormat),
     });
-    const gameFormat = await response.json();
+    const gameFormat = JSON.parse(response.data);
     dispatch(updateGameFormatSuccess(gameFormat));
   } catch (error) {
     dispatch(updateGameFormatFailure(error.message));
@@ -139,7 +139,7 @@ export const handleDeleteGameFormat = (id) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
-    const gameFormat = await response.json();
+    const gameFormat = JSON.parse(response.data);
     dispatch(deleteGameFormatSuccess(gameFormat));
   } catch (error) {
     dispatch(deleteGameFormatFailure(error.message));
