@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showSnackbar } from "./snackbar";
 
 export const ADD_EVENT_REQUEST = "ADD_EVENT_REQUEST";
 export const ADD_EVENTS_SUCCESS = "ADD_EVENTS_SUCCESS";
@@ -143,7 +144,9 @@ export const handleAddEvent = (eventData) => async (dispatch) => {
     });
     const event = JSON.parse(response.data);
     dispatch(addEventsSuccess(event));
+    dispatch(showSnackbar("Event added successfully", "success"));
   } catch (error) {
+    dispatch(showSnackbar("Event add failed", "error"));
     dispatch(addEventFailure(error.message));
   }
 };

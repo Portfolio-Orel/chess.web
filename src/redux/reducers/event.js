@@ -30,25 +30,25 @@ const initialState = {
 const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_EVENTS_REQUEST:
-      return { ...state, isLoading: true, error: null };
+      return { ...state, loading: true, error: null };
     case FETCH_EVENTS_SUCCESS:
-      return { ...state, isLoading: false, events: action.payload.events };
+      return { ...state, loading: false, events: action.payload.events };
     case FETCH_EVENTS_FAILURE:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return { ...state, loading: false, error: action.payload.error };
 
     case ADD_EVENT_REQUEST:
-      return { ...state, isLoading: true, error: null };
+      return { ...state, loading: true, error: null };
     case ADD_EVENTS_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        loading: false,
         events: state.events.concat(action.payload.event),
       };
     case ADD_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return { ...state, loading: false, error: action.payload.error };
 
     case UPDATE_EVENT_REQUEST:
-      return { ...state, isLoading: true, error: null };
+      return { ...state, loading: true, error: null };
     case UPDATE_EVENT_SUCCESS:
       const updatedEvents = state.events.map((event) => {
         if (event.id === action.payload.event.id) {
@@ -56,16 +56,16 @@ const eventsReducer = (state = initialState, action) => {
         }
         return event;
       });
-      return { ...state, isLoading: false, events: updatedEvents };
+      return { ...state, loading: false, events: updatedEvents };
     case UPDATE_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return { ...state, loading: false, error: action.payload.error };
 
     case DELETE_EVENT_REQUEST:
-      return { ...state, isLoading: true, error: null };
+      return { ...state, loading: true, error: null };
     case DELETE_EVENT_SUCCESS:
-      return { ...state, isLoading: false, events: action.payload.events };
+      return { ...state, loading: false, events: action.payload.events };
     case DELETE_EVENT_FAILURE:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return { ...state, loading: false, error: action.payload.error };
     case CLEAR_EVENTS:
       return { ...state, events: [] };
     default:

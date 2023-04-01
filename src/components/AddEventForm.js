@@ -6,6 +6,7 @@ import EventBaseDetails from "./Form/EventBaseDetails";
 import MultiEventField from "./Form/MultiEventField";
 import { handleAddEvent } from "../redux/actions/event";
 import Button from "./Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -24,9 +25,7 @@ const validationSchema = Yup.object().shape({
 const AddEventForm = () => {
   const dispatch = useDispatch();
   const intervals = useSelector((state) => state?.intervals?.intervals) ?? [];
-  const isLoadingAddEvents = useSelector(
-    (state) => state?.events?.loading ?? false
-  );
+  const eventsState = useSelector((state) => state.events);
 
   const [showDetails, setShowDetails] = useState(false);
 
@@ -96,10 +95,16 @@ const AddEventForm = () => {
       }}
     >
       {({ dirty, isValid, values }) => (
-        <Form className="p-4 bg-white rounded-lg shadow-md max-w-md">
+        <Form className="p-4 bg-white rounded-lg shadow-md max-w-md relative">
+          {showDetails && (
+            <ArrowBackIcon
+              className="absolute top-0 left-0 cursor-pointer m-3 z-10"
+              onClick={() => setShowDetails(false)}
+            />
+          )}
           <div className="max-w-md mx-auto">
             {showDetails ? (
-              <div className="rounded-lg p-4 mt-4 animate-fade-in">
+              <div className="rounded-lg p-4 mt-4 animate-fade-in relative">
                 <h2 className="text-lg font-semibold mb-4">Event Details</h2>
                 <div className="mb-4">
                   <label className="block font-medium mb-1">Name</label>
@@ -118,7 +123,7 @@ const AddEventForm = () => {
                   type="submit"
                   // disabled={!dirty || !isValid}
                   className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                  isLoading={isLoadingAddEvents}
+                  isLoading={eventsState.loading}
                 >
                   Submit
                 </Button>

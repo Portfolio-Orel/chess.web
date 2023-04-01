@@ -4,7 +4,7 @@ import FormField from "./FormField";
 import FormFieldTextarea from "./FormFieldTextArea";
 import Dropdown from "../Dropdown";
 import FormFieldCheckbox from "./FormFieldCheckbox";
-import CalendarField from "./CalendarField";
+import CalendarField from "./CalendarField"
 
 const EventBaseDetails = () => {
   const isLoadingDropdown = useSelector(

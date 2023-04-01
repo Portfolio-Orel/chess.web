@@ -1,40 +1,22 @@
-import React from "react";
+import * as React from "react";
 import { useField } from "formik";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from 'dayjs';
 
-const CalendarField = ({ label, name, ...props }) => {
+export default function CalendarField({ label, name, ...props }) {
   const [field, meta, helpers] = useField(name);
 
-  const handleChange = (date) => {
-    helpers.setValue(new Date(date));
-  };
-
   return (
-    <div className="my-4">
-      <div className="flex flex-col">
-        <label
-          className="block text-gray-700 font-bold mb-1"
-          htmlFor={props.id || name}
-        >
-          {label}
-        </label>
-        <div className="relative">
-          <DatePicker
-            className={`appearance-none border ${
-              meta.touched && meta.error ? "border-red-500" : "border-gray-200"
-            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-            selected={field.value}
-            onChange={handleChange}
-            {...props}
-          />
-        </div>
-      </div>
-      {meta.touched && meta.error && (
-        <div className="text-red-500 text-xs italic">{meta.error}</div>
-      )}
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        value={field.value ? dayjs(field.value) : null}
+        onChange={(date) => helpers.setValue(date.toDate())}
+        error={meta.touched && Boolean(meta.error)}
+        helperText={meta.touched && meta.error}
+        {...props}
+      />
+    </LocalizationProvider>
   );
-};
-
-export default CalendarField;
+}
