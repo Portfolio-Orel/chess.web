@@ -6,8 +6,10 @@ import PropTypes from "prop-types";
 import FormField from "./FormField";
 import RadioGroupField from "./RadioGroupField";
 import FormFieldCheckbox from "./FormFieldCheckbox";
+import { useTranslation } from "react-i18next";
 
 const MultiEventField = ({ label, name, ...props }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const intervals = useSelector((state) => state.intervals);
 
@@ -60,7 +62,7 @@ const MultiEventField = ({ label, name, ...props }) => {
         </label>
         <div className="flex items-start flex-col">
           <FormFieldCheckbox
-            label="Multiple Events?"
+            label={`${t("multiple_events")}?`}
             name={`${name}.multipleEvents`}
             type="checkbox"
             onClick={toggleIntervalVisibility}
@@ -69,14 +71,14 @@ const MultiEventField = ({ label, name, ...props }) => {
           {field?.value?.multipleEvents && (
             <div className="ml-4">
               <FormField
-                label="How many events?"
+                label={`${t("how_many_events")}?`}
                 name={`${name}.numberOfEvents`}
                 type="number"
                 value={field?.value?.numberOfEvents ?? ""}
                 {...props}
               />
               <RadioGroupField
-                label="Interval"
+                label={`${t("interval")}`}
                 name={`${name}.interval`}
                 options={intervalOptions}
                 isLoading={!intervals || intervals.loading}
@@ -85,7 +87,7 @@ const MultiEventField = ({ label, name, ...props }) => {
               {field?.value?.interval === "Custom" && (
                 <div className="ml-4">
                   <FormField
-                    label="Custom Interval"
+                    label={t("custom_interval")}
                     name={`${name}.customInterval`}
                     type="number"
                     value={field?.value ?? ""}

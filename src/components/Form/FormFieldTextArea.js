@@ -17,6 +17,7 @@ const FormFieldTextarea = ({ label, name, ...props }) => {
           className={`appearance-none border ${
             meta.touched && meta.error ? "border-red-500" : "border-gray-200"
           } py-2 px-3 rounded-lg w-full md:col-span-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+          style={{ maxHeight: "8em", overflow: "auto" }}
           {...field}
           {...props}
         />

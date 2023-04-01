@@ -7,6 +7,7 @@ import MultiEventField from "./Form/MultiEventField";
 import { handleAddEvent } from "../redux/actions/event";
 import Button from "./Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useTranslation } from "react-i18next";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -23,6 +24,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddEventForm = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const intervals = useSelector((state) => state?.intervals?.intervals) ?? [];
   const eventsState = useSelector((state) => state.events);
@@ -105,15 +107,15 @@ const AddEventForm = () => {
           <div className="max-w-md mx-auto">
             {showDetails ? (
               <div className="rounded-lg p-4 mt-4 animate-fade-in relative">
-                <h2 className="text-lg font-semibold mb-4">Event Details</h2>
+                <h2 className="text-lg font-semibold mb-4">{t("event_details")}</h2>
                 <div className="mb-4">
-                  <label className="block font-medium mb-1">Name</label>
+                  <label className="block font-medium mb-1">{t("name")}</label>
                   <div className="bg-gray-100 p-2 rounded-lg">
                     {values.name}
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label className="block font-medium mb-1">Description</label>
+                  <label className="block font-medium mb-1">{t("description")}</label>
                   <div className="bg-gray-100 p-2 rounded-lg">
                     {values.description}
                   </div>
@@ -125,7 +127,7 @@ const AddEventForm = () => {
                   className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                   isLoading={eventsState.loading}
                 >
-                  Submit
+                  {t("submit")}
                 </Button>
               </div>
             ) : (
@@ -136,7 +138,7 @@ const AddEventForm = () => {
                   // disabled={!dirty || !isValid}
                   className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                 >
-                  Continue
+                  {t("continue")}
                 </button>
               </div>
             )}

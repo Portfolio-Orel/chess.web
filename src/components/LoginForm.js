@@ -7,8 +7,10 @@ import { login } from "../redux/actions/auth";
 import FormField from "./Form/FormField";
 import Button from "./Button";
 import FormFieldPassword from "./Form/FormFieldPassword";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
 
@@ -37,13 +39,13 @@ const LoginForm = () => {
         {({ isSubmitting, isValidating }) => (
           <Form>
             <FormField
-              label="Email"
+              label={t("email")}
               name="email"
               type="email"
               placeholder="Enter your email"
             />
             <FormFieldPassword
-              label="Password"
+              label={t("password")}
               name="password"
               type="password"
               placeholder="Enter your password"

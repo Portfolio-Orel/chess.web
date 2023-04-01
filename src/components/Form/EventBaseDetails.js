@@ -4,9 +4,11 @@ import FormField from "./FormField";
 import FormFieldTextarea from "./FormFieldTextArea";
 import Dropdown from "../Dropdown";
 import FormFieldCheckbox from "./FormFieldCheckbox";
-import CalendarField from "./CalendarField"
+import CalendarField from "./CalendarField";
+import { useTranslation } from "react-i18next";
 
 const EventBaseDetails = () => {
+  const { t } = useTranslation();
   const isLoadingDropdown = useSelector(
     (state) => state?.games?.loading || state.gameFormats.loading
   );
@@ -57,47 +59,46 @@ const EventBaseDetails = () => {
 
   return (
     <>
-      <FormField label="Name" name="name" type="text" />
-      <FormFieldTextarea label="Description" name="description" />
-      <FormField label="Price" name="price" type="number" />
+      <FormField label={t("name")} name="name" type="text" />
+      <FormFieldTextarea label={t("description")} name="description" />
       <CalendarField
-        label="Start Date"
+        label={t("start_date")}
         name="start_date"
         type="date"
         className="w-full"
       />
+      <FormField label={t("price")} name="price" type="number" />
       <FormFieldCheckbox
-        label="For each game"
+        label={t("price_for_each_game")}
         name="is_price_per_game"
         type="checkbox"
       />
       <div className="flex flex-col justify-start items-start">
         <FormFieldCheckbox
-          label="Is Rating Israel"
+          label={t("is_rating_israel")}
           name="is_rating_israel"
           type="checkbox"
         />
         <FormFieldCheckbox
-          label="Is Rating FIDE"
+          label={t("is_rating_fide")}
           name="is_rating_fide"
           type="checkbox"
         />
         <Dropdown
-          label="Game"
+          label={t("game")}
           name="game"
           items={buildGamesItems()}
           isLoading={isLoadingDropdown}
           className="w-full my-4"
         />
         <Dropdown
-          label="Game Format"
+          label={t("game_format")}
           name="game_format"
           items={buildGamesFormatesItems()}
           isLoading={isLoadingDropdown}
           className="w-full"
         />
       </div>
-      {/* <FormField label="Game ID" name="game_id" type="text" /> */}
     </>
   );
 };

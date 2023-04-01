@@ -16,7 +16,7 @@ const Snackbar = () => {
   return (
     <MuiSnackbar
       open={snackbarState.isOpen}
-      autoHideDuration={500000}
+      autoHideDuration={5000}
       onClose={handleClose}
       anchorOrigin={{
         vertical: "bottom",

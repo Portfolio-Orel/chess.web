@@ -13,7 +13,7 @@ const FormFieldCheckbox = ({ label, name, ...props }) => {
           {...field}
           {...props}
         />
-        <span className="ml-2 text-gray-700">{label}</span>
+        <span className=" text-gray-700 mx-2">{label}</span>
       </label>
       {meta.touched && meta.error && (
         <div className="text-red-500 text-xs italic">{meta.error}</div>

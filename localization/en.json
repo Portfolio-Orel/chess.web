@@ -1,0 +1,23 @@
+{
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "price_for_each_game": "Price for each game",
+    "is_rating_israel": "Is Rating Israel",
+    "is_rating_fide": "Is Rating FIDE",
+    "game": "Game",
+    "game_format": "Game Format",
+    "continue": "Continue",
+    "event_details": "Event Details",
+    "multiple_events": "Multiple Events",
+    "how_many_events": "How many events",
+    "interval": "Interval",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "custom": "Custom",
+    "custom_interval": "Custom Interval",
+    "days": "days",
+    "submit": "Submit"
+  }
+  
