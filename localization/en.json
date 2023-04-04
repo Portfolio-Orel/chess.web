@@ -18,6 +18,10 @@
     "custom": "Custom",
     "custom_interval": "Custom Interval",
     "days": "days",
-    "submit": "Submit"
+    "submit": "Submit",
+    "enter_your_password": "Enter your password",
+    "password": "Password",
+    "enter_your_email": "Enter your email",
+    "email": "Email"
   }
   

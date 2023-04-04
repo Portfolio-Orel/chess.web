@@ -42,13 +42,13 @@ const LoginForm = () => {
               label={t("email")}
               name="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder={t("enter_your_email")}
             />
             <FormFieldPassword
               label={t("password")}
               name="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder={t("enter_your_password")}
             />
             <div className="w-full flex justify-center items-center p-4">
               <Button

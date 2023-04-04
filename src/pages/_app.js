@@ -17,7 +17,9 @@ i18n.use(initReactI18next).init({
 });
 
 export default function App({ Component, pageProps }) {
-  document.body.dir = i18n.dir();
+  if (typeof document !== "undefined") {
+    document.body.dir = i18n.dir();
+  }
   configureAmplify();
 
   return (

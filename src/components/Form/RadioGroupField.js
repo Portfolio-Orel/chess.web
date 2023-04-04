@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 import Skeleton from "../Skeleton";
+import { useTranslation } from "react-i18next";
 
 const RadioGroupField = ({ label, name, options, isLoading, ...props }) => {
+  const { t } = useTranslation();
   const [field, meta, helpers] = useField(name);
 
   useEffect(() => {
@@ -41,9 +43,9 @@ const RadioGroupField = ({ label, name, options, isLoading, ...props }) => {
               />
               <label
                 htmlFor={`${name}-${option.value}`}
-                className="ml-2 text-gray-700"
+                className="mx-2 text-gray-700"
               >
-                {option.label}
+                {t(option.label.toLowerCase()) ?? option.label}
               </label>
             </div>
           ))}
