@@ -2,7 +2,7 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../actions/
 
 const initialState = {
   user: null,
-  isLoading: true,
+  isLoading: false,
   error: null
 };
 
