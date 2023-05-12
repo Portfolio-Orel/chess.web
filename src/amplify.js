@@ -7,6 +7,7 @@ export const configureAmplify = () => {
       region: process.env.REGION,
       identityPoolRegion: process.env.IDENTITY_POOL_REGION,
       userPoolId: process.env.USER_POOL_ID,
+      userPoolWebClientId: process.env.USER_POOL_WEB_CLIENT_ID, // Add the clientId property
     },
   });
 };
