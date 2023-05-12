@@ -7,6 +7,8 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const LOGOUT = "LOGOUT";
 
+const buildUserName = (email) => `cu_${email.replace("@", "_")}`.toLowerCase();
+
 const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
@@ -59,9 +61,16 @@ export const isAuthenticated = () => async (dispatch) => {
     await setUser(dispatch);
   }
 };
-export const login = (username, password) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
+  console.log("About to login");
   dispatch(loginRequest());
-  await Auth.signIn(username, password);
+  const username = buildUserName(email);
+  try {
+    await Auth.signIn(username, password);
+  } catch (error) {
+    dispatch(loginFailure(error.message ?? "Error logging in"));
+    return;
+  }
   await setUser(dispatch);
 };
 
