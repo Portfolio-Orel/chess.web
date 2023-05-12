@@ -66,9 +66,11 @@ export const login = (email, password) => async (dispatch) => {
   debugger;
   dispatch(loginRequest());
   const username = buildUserName(email);
+  console.log("details", username, password);
   try {
     await Auth.signIn(username, password);
   } catch (error) {
+    console.log("Error logging in", error);
     dispatch(loginFailure(error.message ?? "Error logging in"));
     return;
   }
