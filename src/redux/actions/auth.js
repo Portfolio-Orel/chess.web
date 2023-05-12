@@ -33,9 +33,9 @@ const setUser = async (dispatch) => {
     const idToken = session.idToken.jwtToken;
     const user = await Auth.currentAuthenticatedUser();
     Cookies.set("token", idToken);
-    Cookies.set("userid", user.username);
+    Cookies.set("userid", user.attributes.sub);
     axios.defaults.headers.common["Authorization"] = idToken;
-    axios.defaults.headers.common["userid"] = user.username;
+    axios.defaults.headers.common["userid"] = user.attributes.sub;
     const result = await axios.get("/api/users");
     const userFromServer = JSON.parse(result.data);
     if (
@@ -56,6 +56,7 @@ const setUser = async (dispatch) => {
 };
 
 export const isAuthenticated = () => async (dispatch) => {
+  debugger;
   const session = await Auth.currentSession();
   if (session.isValid()) {
     await setUser(dispatch);
