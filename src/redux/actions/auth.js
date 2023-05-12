@@ -63,6 +63,7 @@ export const isAuthenticated = () => async (dispatch) => {
 };
 export const login = (email, password) => async (dispatch) => {
   console.log("About to login");
+  debugger;
   dispatch(loginRequest());
   const username = buildUserName(email);
   try {
