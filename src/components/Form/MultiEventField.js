@@ -93,7 +93,7 @@ const MultiEventField = ({ label, name, ...props }) => {
                     value={field?.value ?? ""}
                     {...props}
                   />
-                  <span className="ml-1">days</span>
+                  <span className="ml-1">{t("days")}</span>
                 </div>
               )}
             </div>

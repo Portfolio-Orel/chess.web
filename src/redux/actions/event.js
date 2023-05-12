@@ -144,7 +144,7 @@ export const handleAddEvent = (eventData) => async (dispatch) => {
     });
     const event = JSON.parse(response.data);
     dispatch(addEventsSuccess(event));
-    dispatch(showSnackbar("Event added successfully", "success"));
+    dispatch(showSnackbar("האירוע נוסף בהצלחה!", "success"));
   } catch (error) {
     dispatch(showSnackbar("Event add failed", "error"));
     dispatch(addEventFailure(error.message));
