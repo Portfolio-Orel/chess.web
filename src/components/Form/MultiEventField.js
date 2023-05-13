@@ -74,6 +74,7 @@ const MultiEventField = ({ label, name, ...props }) => {
                 label={`${t("how_many_events")}?`}
                 name={`${name}.numberOfEvents`}
                 type="number"
+                variant="outlined"
                 value={field?.value?.numberOfEvents ?? ""}
                 {...props}
               />

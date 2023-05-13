@@ -22,5 +22,9 @@
   "enter_your_password": "הכנס את הסיסמה שלך",
   "password": "סיסמה",
   "enter_your_email": "הכנס את האימייל שלך",
-  "email": "אימייל"
+  "email": "אימייל",
+
+  "tooltip_price_for_each_game": "המחיר הנקוב הינו לכל משחק בנפרד",
+  "tooltip_rating_israel": "המשחקים יחשבו לדירוג השחמט הישראלי.",
+  "tooltip_rating_fide": "המשחקים יחשבו לדירוג השחמט הבינלאומי."
 }

@@ -57,7 +57,7 @@ const LoginForm = () => {
                 type={authState?.isLoading ? "text" : "submit"}
                 disabled={isSubmitting || isValidating}
               >
-                Submit
+                {t("submit")}
               </Button>
             </div>
           </Form>

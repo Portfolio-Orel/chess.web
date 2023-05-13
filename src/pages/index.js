@@ -32,14 +32,12 @@ export default function Home() {
   }, [authState, dispatch]);
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen w-full">
       {authState?.loading ? (
         <Loading />
-      ) : (
-        <div className="flex items-center justify-center flex-col">
-          <div>
-            {authState?.user ? <AddEventForm /> : <LoginForm />}
-          </div>
+      ) : ( 
+        <div className="flex items-center justify-center flex-col w-full">
+          {authState?.user ? <AddEventForm /> : <LoginForm />}
           {authState?.error ? (
             <div className="text-sm text-rose-600">{authState.error}</div>
           ) : (
@@ -48,5 +46,5 @@ export default function Home() {
         </div>
       )}
     </div>
-  ); 
+  );
 }

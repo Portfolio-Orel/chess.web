@@ -1,28 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import { useField } from "formik";
+import { Input, TextField } from "@mui/material";
 
-const FormField = ({ label, options, name, ...props }) => {
+const FormField = ({ label, name, variant, ...props }) => {
   const [field, meta] = useField(name);
 
   return (
-    <div className="my-4">
+    <div>
       <div className="flex flex-col">
         <label
-          className="block text-gray-700 font-bold mb-1"
+          className="mx-3 block text-gray-700 font-bold mb-1"
           htmlFor={props.id || name}
         >
           {label}
         </label>
-        <div className="relative">
-          <input
+        {variant === "outlined" ? (
+          <TextField
             type="text"
-            className={`appearance-none border ${
+            variant="outlined"
+            className={`border ${
               meta.touched && meta.error ? "border-red-500" : "border-gray-200"
-            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight`}
             {...field}
             {...props}
           />
-        </div>
+        ) : (
+          <Input
+            type="text"
+            variant="outlined"
+            className={`border ${
+              meta.touched && meta.error ? "border-red-500" : "border-gray-200"
+            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight`}
+            {...field}
+            {...props}
+          />
+        )}
       </div>
       {meta.touched && meta.error && (
         <div className="text-red-500 text-xs italic">{meta.error}</div>

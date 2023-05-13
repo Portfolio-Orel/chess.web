@@ -97,17 +97,22 @@ const AddEventForm = () => {
       }}
     >
       {({ dirty, isValid, values }) => (
-        <Form className="p-4 bg-white rounded-lg shadow-md max-w-md relative">
+        <Form
+          className="p-4 bg-white rounded-lg shadow-md relative h-full
+        sm:w-16 md:w-44 xl:w-10/12 2xl:w-96"
+        >
           {showDetails && (
             <ArrowBackIcon
               className="absolute top-0 left-0 cursor-pointer m-3 z-10"
               onClick={() => setShowDetails(false)}
             />
           )}
-          <div className="max-w-md mx-auto">
+          <div className="max-w-xl mx-auto">
             {showDetails ? (
               <div className="rounded-lg p-4 mt-4 animate-fade-in relative">
-                <h2 className="text-lg font-semibold mb-4">{t("event_details")}</h2>
+                <h2 className="text-lg font-semibold mb-4">
+                  {t("event_details")}
+                </h2>
                 <div className="mb-4">
                   <label className="block font-medium mb-1">{t("name")}</label>
                   <div className="bg-gray-100 p-2 rounded-lg">
@@ -115,7 +120,9 @@ const AddEventForm = () => {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label className="block font-medium mb-1">{t("description")}</label>
+                  <label className="block font-medium mb-1">
+                    {t("description")}
+                  </label>
                   <div className="bg-gray-100 p-2 rounded-lg">
                     {values.description}
                   </div>
@@ -132,14 +139,7 @@ const AddEventForm = () => {
               </div>
             ) : (
               <div className="animate-fade-in">
-                <EventBaseDetails />
-                <button
-                  onClick={onBaseDetailsSubmit}
-                  // disabled={!dirty || !isValid}
-                  className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                >
-                  {t("continue")}
-                </button>
+                <EventBaseDetails onSubmit={onBaseDetailsSubmit} />
               </div>
             )}
           </div>

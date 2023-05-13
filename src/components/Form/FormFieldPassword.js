@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useField } from "formik";
+import { Input, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const FormFieldPassword = ({ label, name, ...props }) => {
   const [field, meta] = useField(name);
@@ -12,7 +15,7 @@ const FormFieldPassword = ({ label, name, ...props }) => {
   const inputType = !showPassword ? "password" : "text";
 
   return (
-    <div className="my-4">
+    <div>
       <div className="flex flex-col">
         <label
           className="block text-gray-700 font-bold mb-1"
@@ -21,63 +24,28 @@ const FormFieldPassword = ({ label, name, ...props }) => {
           {label}
         </label>
         <div className="relative">
-          <input
+          <Input
             type={inputType}
-            className={`appearance-none border ${
+            className={`border ${
               meta.touched && meta.error ? "border-red-500" : "border-gray-200"
-            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            } rounded-lg w-full py-2 px-3 text-gray-700 leading-tight`}
             {...field}
             {...props}
+            startAdornment={
+              <InputAdornment position="end">
+                <div
+                  className="cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <VisibilityOffIcon className="text-gray-500" />
+                  ) : (
+                    <VisibilityIcon className="text-gray-500" />
+                  )}
+                </div>
+              </InputAdornment>
+            }
           />
-          <div
-            className="absolute top-2 right-2 cursor-pointer"
-            onClick={togglePasswordVisibility}
-          >
-            {showPassword ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                className="h-6 w-6 text-gray-500"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M20.71 15.88A10 10 0 0 1 4.25 9.07"
-                />
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M14.14 14.14A6 6 0 0 1 9.07 9.07"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                className="h-6 w-6 text-gray-500"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M20.71 15.88A10 10 0 0 1 4.25 9.07"
-                />
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M14.14 14.14A6 6 0 0 1 9.07 9.07"
-                />
-                <circle cx="12" cy="12" r="3" fill="currentColor" />
-              </svg>
-            )}
-          </div>
         </div>
         {meta.touched && meta.error && (
           <div className="text-red-500 text-xs italic">{meta.error}</div>

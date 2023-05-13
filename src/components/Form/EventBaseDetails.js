@@ -7,13 +7,15 @@ import FormFieldCheckbox from "./FormFieldCheckbox";
 import CalendarField from "./CalendarField";
 import { useTranslation } from "react-i18next";
 
-const EventBaseDetails = () => {
+const EventBaseDetails = ({ onSubmit }) => {
   const { t } = useTranslation();
   const isLoadingDropdown = useSelector(
     (state) => state?.games?.loading || state.gameFormats.loading
   );
   const games = useSelector((state) => state?.games?.games);
   const gameFormats = useSelector((state) => state?.gameFormats?.gameFormats);
+
+  const submit = (values) => onSubmit(values);
 
   const buildGamesItems = () => {
     if (games && Array.isArray(games)) {
@@ -58,8 +60,8 @@ const EventBaseDetails = () => {
   };
 
   return (
-    <>
-      <FormField label={t("name")} name="name" type="text" />
+    <div className="flex flex-col gap-4">
+      <FormField label={t("name")} name="name" type="text" variant="outlined" />
       <FormFieldTextarea label={t("description")} name="description" />
       <CalendarField
         label={t("start_date")}
@@ -67,22 +69,32 @@ const EventBaseDetails = () => {
         type="date"
         className="w-full"
       />
-      <FormField label={t("price")} name="price" type="number" />
-      <FormFieldCheckbox
-        label={t("price_for_each_game")}
-        name="is_price_per_game"
-        type="checkbox"
-      />
+      <div>
+        <FormField
+          label={t("price")}
+          name="price"
+          type="number"
+          variant="outlined"
+        />
+        <FormFieldCheckbox
+          label={t("price_for_each_game")}
+          name="is_price_per_game"
+          type="checkbox"
+          tooltip={t("tooltip_price_for_each_game")}
+        />
+      </div>
       <div className="flex flex-col justify-start items-start">
         <FormFieldCheckbox
           label={t("is_rating_israel")}
           name="is_rating_israel"
           type="checkbox"
+          tooltip={t("tooltip_rating_israel")}
         />
         <FormFieldCheckbox
           label={t("is_rating_fide")}
           name="is_rating_fide"
           type="checkbox"
+          tooltip={t("tooltip_rating_fide")}
         />
         <Dropdown
           label={t("game")}
@@ -99,7 +111,14 @@ const EventBaseDetails = () => {
           className="w-full"
         />
       </div>
-    </>
+      <button
+        onClick={submit}
+        // disabled={!dirty || !isValid}
+        className="block w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+      >
+        {t("continue")}
+      </button>
+    </div>
   );
 };
 

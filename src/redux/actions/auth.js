@@ -56,7 +56,6 @@ const setUser = async (dispatch) => {
 };
 
 export const isAuthenticated = () => async (dispatch) => {
-  debugger;
   const session = await Auth.currentSession();
   if (session.isValid()) {
     await setUser(dispatch);
