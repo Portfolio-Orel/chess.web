@@ -37,7 +37,7 @@ export default function Home() {
         <Loading />
       ) : (
         <div className="flex items-center justify-center flex-col">
-          <div className="w-1/4">
+          <div>
             {authState?.user ? <AddEventForm /> : <LoginForm />}
           </div>
           {authState?.error ? (
@@ -48,5 +48,5 @@ export default function Home() {
         </div>
       )}
     </div>
-  );
+  ); 
 }
