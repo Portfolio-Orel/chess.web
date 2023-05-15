@@ -1,4 +1,3 @@
-import LoginForm from "@/components/LoginForm";
 import { useSelector, useDispatch } from "react-redux";
 import { isAuthenticated } from "@/redux/actions/auth";
 import { handleFetchGames, handleClearGames } from "@/redux/actions/games";
@@ -7,11 +6,13 @@ import {
   handleClearGameFormats,
 } from "@/redux/actions/gameFormats";
 import { handleFetchEvents, handleClearEvents } from "@/redux/actions/event";
-import AddEventForm from "@/components/AddEventForm";
 import { useEffect } from "react";
 import { Loading } from "@/components/Loading";
+import { useRouter } from "next/router";
+import Screens from "../../constants/screens";
 
 export default function Home() {
+  const router = useRouter();
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -24,27 +25,18 @@ export default function Home() {
       dispatch(handleFetchGames());
       dispatch(handleFetchGameFormats());
       dispatch(handleFetchEvents());
+      router.push(Screens.MAIN);
     } else {
       dispatch(handleClearGames());
       dispatch(handleClearGameFormats());
       dispatch(handleClearEvents());
+      router.push(Screens.LOGIN);
     }
   }, [authState, dispatch]);
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      {authState?.loading ? (
-        <Loading />
-      ) : ( 
-        <div className="flex items-center justify-center flex-col w-full">
-          {authState?.user ? <AddEventForm /> : <LoginForm />}
-          {authState?.error ? (
-            <div className="text-sm text-rose-600">{authState.error}</div>
-          ) : (
-            ""
-          )}
-        </div>
-      )}
+      <Loading />
     </div>
   );
 }
