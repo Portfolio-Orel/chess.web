@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,10 +9,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@material-ui/core/IconButton";
-import CancelIcon from "@mui/icons-material/Cancel";
+import CircularProgress from "@mui/material/CircularProgress";
 import clsx from "clsx";
+
+import { handleDeleteEvent } from "@/redux/actions/event";
+
+import { useTranslation } from "react-i18next";
+import { Loading } from "./Loading";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -25,26 +30,71 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#3b82f6",
     color: theme.palette.common.white,
     fontWeight: "bold",
+    textAlign: "center", // Center the text inside header cells
+  },
+  cell: {
+    textAlign: "center", // Center the text inside body cells
   },
   actionIcons: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
   },
   iconButton: {
     marginRight: theme.spacing(1),
   },
 }));
 
-const EventsTable = ({ data }) => {
+const EventsTable = () => {
   const classes = useStyles();
-  const [editableRowIndex, setEditableRowIndex] = useState(-1);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const iconSize = 24;
 
-  const handleEdit = (index) => {
-    setEditableRowIndex(index);
-  };
+  const eventsState = useSelector((state) => state.events);
+  const gamesState = useSelector((state) => state.games);
+  const gameFormatsState = useSelector((state) => state.gameFormats);
+
+  const [eventIndexLoadingDelete, setEventIndexLoadingDelete] = useState([]);
+  const [data, setData] = useState([]);
+
+  const buildData = useCallback(() => {
+    setEventIndexLoadingDelete([]);
+    if (
+      eventsState.events &&
+      gamesState.games &&
+      gameFormatsState.gameFormats
+    ) {
+      return eventsState.events.map((event) => {
+        const game = gamesState.games.find((game) => game.id === event.game_id);
+        const gameFormat = gameFormatsState.gameFormats.find(
+          (gameFormat) => gameFormat.id === event.game_format_id
+        );
+
+        return {
+          ...event,
+          game: game ? game.name : "",
+          game_format: gameFormat ? gameFormat.name : "",
+        };
+      });
+    }
+
+    return [];
+  }, [eventsState.events, gamesState.games, gameFormatsState.gameFormats]);
+
+  useEffect(() => {
+    setData(buildData());
+  }, [
+    eventsState.events,
+    gamesState.games,
+    gameFormatsState.gameFormats,
+    buildData,
+  ]);
 
   const handleDelete = (index) => {
-    // Implement your delete logic here
+    setEventIndexLoadingDelete([...eventIndexLoadingDelete, index]);
+    // debugger;
+    dispatch(handleDeleteEvent(data[index].id, onEventDeleteSuccess));
   };
 
   return (
@@ -52,18 +102,26 @@ const EventsTable = ({ data }) => {
       <Table className={classes.table} aria-label="Data Table">
         <TableHead>
           <TableRow>
-            <TableCell className={classes.headerCell}>Actions</TableCell>
-            <TableCell className={classes.headerCell}>Date</TableCell>
-            <TableCell className={classes.headerCell}>Name</TableCell>
-            <TableCell className={classes.headerCell}>Description</TableCell>
-            <TableCell className={classes.headerCell}>Price</TableCell>
-            <TableCell className={classes.headerCell}>Round Numbers</TableCell>
-            <TableCell className={classes.headerCell}>Game Format</TableCell>
+            <TableCell className={classes.headerCell}>{t("actions")}</TableCell>
+            <TableCell className={classes.headerCell}>{t("date")}</TableCell>
+            <TableCell className={classes.headerCell}>{t("name")}</TableCell>
             <TableCell className={classes.headerCell}>
-              Rating (Israel)
+              {t("description")}
             </TableCell>
-            <TableCell className={classes.headerCell}>Rating (FIDE)</TableCell>
-            <TableCell className={classes.headerCell}>Game</TableCell>
+            <TableCell className={classes.headerCell}>{t("price")}</TableCell>
+            <TableCell className={classes.headerCell}>
+              {t("number_of_rounds")}
+            </TableCell>
+            <TableCell className={classes.headerCell}>
+              {t("game_format")}
+            </TableCell>
+            <TableCell className={classes.headerCell}>
+              {t("rating_israel")}
+            </TableCell>
+            <TableCell className={classes.headerCell}>
+              {t("rating_fide")}
+            </TableCell>
+            <TableCell className={classes.headerCell}>{t("game")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -72,74 +130,48 @@ const EventsTable = ({ data }) => {
               key={index}
               className={clsx({ "even-row": index % 2 === 0 })}
             >
-              <TableCell>
-                {editableRowIndex === index ? (
-                  <div className={classes.actionIcons}>
-                    <IconButton
-                      className={classes.iconButton}
-                      aria-label="save"
-                    >
-                      <CheckIcon />
-                    </IconButton>
-                    <IconButton
-                      className={classes.iconButton}
-                      aria-label="cancel"
-                    >
-                      <CancelIcon />
-                    </IconButton>
-                  </div>
-                ) : (
-                  <div className={classes.actionIcons}>
-                    <IconButton
-                      className={classes.iconButton}
-                      aria-label="edit"
-                      onClick={() => handleEdit(index)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+              <TableCell className={classes.cell}>
+                <div className={classes.actionIcons}>
+                  {eventIndexLoadingDelete.includes(index) ? (
+                    <CircularProgress
+                      size={iconSize}
+                      style={{ marginLeft: 16, marginRight: 16 }}
+                    />
+                  ) : (
                     <IconButton
                       className={classes.iconButton}
                       aria-label="delete"
                       onClick={() => handleDelete(index)}
                     >
-                      <DeleteIcon />
+                      <DeleteIcon
+                        style={{ height: iconSize, width: iconSize }}
+                      />
                     </IconButton>
-                  </div>
-                )}
+                  )}
+                  <IconButton
+                    className={classes.iconButton}
+                    aria-label="edit"
+                    onClick={() => handleEdit(index)}
+                  >
+                    <EditIcon style={{ height: iconSize, width: iconSize }} />
+                  </IconButton>
+                </div>
               </TableCell>
-              <TableCell>
-                {editableRowIndex === index ? (
-                  <input type="text" value={row.date} />
-                ) : (
-                  row.date
-                )}
+              <TableCell className={classes.cell}>{row.date}</TableCell>
+              <TableCell className={classes.cell}>{row.name}</TableCell>
+              <TableCell className={classes.cell}>{row.description} </TableCell>
+              <TableCell className={classes.cell}>{row.price} </TableCell>
+              <TableCell className={classes.cell}>
+                {row.number_of_rounds}
               </TableCell>
-              <TableCell>
-                {editableRowIndex === index ? (
-                  <input type="text" value={row.name} />
-                ) : (
-                  row.name
-                )}
+              <TableCell className={classes.cell}>{row.game_format}</TableCell>
+              <TableCell className={classes.cell}>
+                {row.is_rating_israel ? "-" : "V"}
               </TableCell>
-              <TableCell>
-                {editableRowIndex === index ? (
-                  <input type="text" value={row.description} />
-                ) : (
-                  row.description
-                )}
+              <TableCell className={classes.cell}>
+                {row.is_rating_fide ? "-" : "V"}
               </TableCell>
-              <TableCell>
-                {editableRowIndex === index ? (
-                  <input type="number" value={row.price} />
-                ) : (
-                  row.price
-                )}
-              </TableCell>
-              <TableCell>{row.round_numbers}</TableCell>
-              <TableCell>{row.game_format}</TableCell>
-              <TableCell>{row.is_rating_israel.toString()}</TableCell>
-              <TableCell>{row.is_rating_fide.toString()}</TableCell>
-              <TableCell>{row.game}</TableCell>
+              <TableCell className={classes.cell}>{row.game}</TableCell>
             </TableRow>
           ))}
         </TableBody>

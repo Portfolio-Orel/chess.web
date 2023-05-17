@@ -1,8 +1,15 @@
 import React, { useEffect } from "react";
 import AddEventForm from "@/components/AddEventForm";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import EventsTable from "@/components/EventsTable";
+import { handleFetchGames, handleClearGames } from "@/redux/actions/games";
+import {
+  handleFetchGameFormats,
+  handleClearGameFormats,
+} from "@/redux/actions/gameFormats";
+import { handleFetchEvents, handleClearEvents } from "@/redux/actions/event";
+import Screens from "../../constants/screens";
 
 const data = [
   {
@@ -10,7 +17,7 @@ const data = [
     name: "Event A",
     description: "Lorem ipsum dolor sit amet",
     price: 9.99,
-    round_numbers: 4,
+    number_of_rounds: 4,
     game_format: "Chess",
     is_rating_israel: true,
     is_rating_fide: false,
@@ -21,7 +28,7 @@ const data = [
     name: "Event B",
     description: "Consectetur adipiscing elit",
     price: 19.99,
-    round_numbers: 6,
+    number_of_rounds: 6,
     game_format: "Checkers",
     is_rating_israel: false,
     is_rating_fide: true,
@@ -32,7 +39,7 @@ const data = [
     name: "Event C",
     description: "Sed do eiusmod tempor incididunt",
     price: 14.99,
-    round_numbers: 5,
+    number_of_rounds: 5,
     game_format: "Chess",
     is_rating_israel: true,
     is_rating_fide: true,
@@ -42,18 +49,28 @@ const data = [
 
 const Main = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const authState = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!authState?.user) {
-      router.push("/login");
+    if (authState.user) {
+      dispatch(handleFetchGames());
+      dispatch(handleFetchGameFormats());
+      dispatch(handleFetchEvents());
+      router.push(Screens.MAIN);
+    } else {
+      dispatch(handleClearGames());
+      dispatch(handleClearGameFormats());
+      dispatch(handleClearEvents());
+      router.push(Screens.LOGIN);
     }
-  }, [authState]);
+  }, [authState.user]);
 
   return (
     <div className="w-full h-full flex flex-row">
       <div className="w-10/12">
-        <EventsTable data={data} />
+        <EventsTable />
       </div>
       <AddEventForm />
     </div>
